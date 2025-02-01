@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tỏ tình đặc biệt</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            overflow: hidden;
+            position: relative;
+        }
+
+        h1 {
+            color: white;
+            text-shadow: 2px 2px 5px #ff6f91;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-yes {
+            background-color: #ff6f91;
+            color: white;
+            font-size: 36px; /* Nút đồng ý bự hơn */
+            font-weight: bold;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px; /* Đặt nút "Đồng ý" lên trên */
+        }
+
+        .btn-no {
+            background-color: #f44336;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            position: absolute; /* Thêm thuộc tính này để nút có thể di chuyển */
+            bottom: 100px; /* Đặt nút "Từ chối" xuống dưới */
+            width: 160px; /* Đảm bảo kích thước cố định */
+            height: 50px; /* Đảm bảo kích thước cố định */
+            transition: all 0.5s ease; /* Hiệu ứng di chuyển mượt mà */
+            z-index: 9999; /* Đảm bảo nút luôn ở trên */
+        }
+
+        .heart {
+            position: absolute;
+            width: 30px; /* Trái tim nhỏ màu hồng */
+            height: 30px;
+            background-color: #ff9a9e;
+            transform: rotate(-45deg);
+            animation: float 6s infinite;
+            z-index: 1; /* Đảm bảo trái tim nằm dưới nút */
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff9a9e;
+            border-radius: 50%;
+        }
+
+        .heart:before {
+            top: -15px;
+            left: 0;
+        }
+
+        .heart:after {
+            left: 15px;
+            top: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(-45deg) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-300px) rotate(-45deg) scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-600px) rotate(-45deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        #message {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Em có đồng ý làm người yêu anh không? 🥰</h1>
+    <button class="btn btn-yes" onclick="yes()">Đồng ý</button>
+    <button class="btn btn-no" id="no-btn" onmouseover="moveButton()" ontouchstart="moveButton()">Từ chối</button>
+    <div id="message">Anh biết mà! 😍 Yêu em nhiều ❤️</div>
+
+    <script>
+        // Hàm xử lý khi bấm "Đồng ý"
+        function yes() {
+            // Hiển thị thông báo
+            document.getElementById("message").style.display = "block";
+
+            // Tạo hiệu ứng trái tim bay xung quanh
+            for (let i = 0; i < 15; i++) { // Tạo nhiều trái tim
+                createHeartLarge();
+            }
+        }
+
+        // Hàm dịch chuyển nút "Từ chối"
+        function moveButton() {
+            const btn = document.getElementById("no-btn");
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.left = `${x}px`;
+            btn.style.top = `${y}px`;
+        }
+
+        // Tạo hiệu ứng trái tim bay nhỏ xung quanh
+        function createHeartSmall() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.style.left = Math.random() * 100 + "vw"; // Đặt trái tim ngẫu nhiên trên màn hình
+            heart.style.animationDuration = Math.random() * 2 + 4 + "s"; // Thời gian bay ngẫu nhiên
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000); // Xóa trái tim sau khi bay
+        }
+
+        // Tạo những trái tim bay nhỏ xung quanh khi mở trang
+        function createBackgroundHearts() {
+            for (let i = 0; i < 10; i++) { // Tạo trái tim nền
+                createHeartSmall();
+            }
+        }
+
+        setInterval(createBackgroundHearts, 1000); // Tạo trái tim nền mỗi giây
+
+        // Tạo trái tim lớn khi bấm "Đồng ý"
+        function createHeartLarge() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.style.width = "60px";
+            heart.style.height = "60px";
+            heart.style.backgroundColor = "#ff2a68"; // Trái tim lớn màu đỏ
+            heart.style.left = Math.random() * 100 + "vw"; // Đặt trái tim ngẫu nhiên trên màn hình
+            heart.style.animationDuration = Math.random() * 2 + 4 + "s"; // Thời gian bay ngẫu nhiên
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000); // Xóa trái tim sau khi bay
+        }
+    </script>
+</body>
+</html>
