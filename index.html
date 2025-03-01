@@ -3,191 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tỏ tình đặc biệt</title>
+    <title>Tỏ Tình Siêu VIP</title>
     <style>
         body {
+            margin: 0;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            font-family: 'Great Vibes', cursive;
+            background: url('https://i.imgur.com/jnIXYDF.jpeg') no-repeat center/cover;
             overflow: hidden;
             position: relative;
         }
 
-        h1 {
-            color: white;
-            text-shadow: 2px 2px 5px #ff6f91;
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 102, 102, 0.4), rgba(255, 153, 102, 0.3), rgba(255, 204, 102, 0.2));
+            z-index: 0;
+        }
+
+        .container {
             text-align: center;
-            margin-top: 20px;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 70px;
+            text-shadow: 0 5px 25px rgba(255, 102, 102, 1), 0 0 50px rgba(255, 255, 255, 0.9);
+            margin: 0;
+            animation: fadeInDown 1.5s ease-out, glow 2s infinite;
         }
 
         .btn {
-            padding: 15px 30px;
-            margin: 10px;
-            font-size: 20px;
+            padding: 20px 50px;
+            margin: 20px;
+            font-size: 28px;
+            font-family: 'Poppins', sans-serif;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-yes {
-            background-color: #ff6f91;
+            background: linear-gradient(45deg, #ff6666, #ff9966, #ffcc66);
             color: white;
-            font-size: 36px; /* Nút đồng ý bự hơn */
             font-weight: bold;
-            border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px; /* Đặt nút "Đồng ý" lên trên */
+            box-shadow: 0 10px 30px rgba(255, 102, 102, 0.8);
+        }
+
+        .btn-yes:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-yes:hover:before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.15) rotate(3deg);
+            box-shadow: 0 15px 40px rgba(255, 102, 102, 1);
         }
 
         .btn-no {
-            background-color: #f44336;
+            background: linear-gradient(45deg, #ff3333, #ff6666);
             color: white;
-            font-size: 18px;
-            padding: 10px 20px;
-            border-radius: 10px;
-            position: absolute; /* Thêm thuộc tính này để nút có thể di chuyển */
-            bottom: 100px; /* Đặt nút "Từ chối" xuống dưới */
-            width: 160px; /* Đảm bảo kích thước cố định */
-            height: 50px; /* Đảm bảo kích thước cố định */
-            transition: all 0.5s ease; /* Hiệu ứng di chuyển mượt mà */
-            z-index: 9999; /* Đảm bảo nút luôn ở trên */
+            font-size: 20px;
+            padding: 12px 30px;
+            position: absolute;
+            left: 50%;
+            top: 70%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 60px;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .btn-no:hover {
+            transform: scale(1.1) translate(-50%, -50%);
+            box-shadow: 0 10px 20px rgba(255, 51, 51, 0.8);
         }
 
         .heart {
             position: absolute;
-            width: 30px; /* Trái tim nhỏ màu hồng */
-            height: 30px;
-            background-color: #ff9a9e;
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(45deg, #ff9966, #ffcc66);
             transform: rotate(-45deg);
-            animation: float 6s infinite;
-            z-index: 1; /* Đảm bảo trái tim nằm dưới nút */
+            animation: fallHeart 5s linear infinite;
+            z-index: 1;
+            box-shadow: 0 3px 10px rgba(255, 153, 102, 0.5);
+            opacity: 0.7;
         }
 
         .heart:before,
         .heart:after {
             content: '';
             position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: #ff9a9e;
+            width: 15px;
+            height: 15px;
+            background: inherit;
             border-radius: 50%;
         }
 
         .heart:before {
-            top: -15px;
+            top: -7.5px;
             left: 0;
         }
 
         .heart:after {
-            left: 15px;
+            left: 7.5px;
             top: 0;
         }
 
-        @keyframes float {
+        @keyframes fallHeart {
             0% {
-                transform: translateY(0) rotate(-45deg) scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-300px) rotate(-45deg) scale(1.2);
-                opacity: 0.8;
+                transform: translateY(-100vh) translateX(0) rotate(-45deg) scale(1);
+                opacity: 0.7;
             }
             100% {
-                transform: translateY(-600px) rotate(-45deg) scale(0.8);
+                transform: translateY(100vh) translateX(${Math.random() * 100 - 50}px) rotate(-45deg) scale(0.8);
                 opacity: 0;
             }
         }
 
         #message {
             display: none;
-            font-size: 24px;
+            font-size: 40px;
             font-weight: bold;
-            color: white;
-            text-align: center;
-            margin-top: 20px;
-            animation: fadeIn 1s ease-out;
+            color: #fff;
+            text-shadow: 0 5px 25px rgba(255, 102, 102, 1);
+            margin-top: 30px;
+            animation: fadeInUp 1.5s ease-out, pulse 1s infinite;
+            background: linear-gradient(45deg, rgba(255, 102, 102, 0.3), rgba(255, 204, 102, 0.2));
+            padding: 25px 50px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(255, 102, 102, 0.7);
         }
 
+        #name-input {
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        #crush-name {
+            padding: 15px 30px;
+            font-size: 22px;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            outline: none;
+            background: rgba(255, 255, 255, 0.9);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        #crush-name:focus {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 102, 102, 0.6);
+        }
+
+        #start-btn {
+            padding: 15px 40px;
+            font-size: 22px;
+            background: linear-gradient(45deg, #ff9966, #ff6666);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 102, 102, 0.5);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        #start-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 102, 102, 0.8);
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0));
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+            z-index: 5;
+        }
+
+        .petal {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: url('https://i.imgur.com/8oXgKkG.png') no-repeat center/contain;
+            animation: fallPetal 5s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        /* Hiệu ứng VIP */
         @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            0% { opacity: 0; transform: translateY(-70px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(70px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 5px 25px rgba(255, 102, 102, 1), 0 0 50px rgba(255, 255, 255, 0.9); }
+            50% { text-shadow: 0 5px 35px rgba(255, 102, 102, 1), 0 0 70px rgba(255, 255, 255, 1); }
+            100% { text-shadow: 0 5px 25px rgba(255, 102, 102, 1), 0 0 50px rgba(255, 255, 255, 0.9); }
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.3); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
+        @keyframes fallPetal {
             0% {
-                opacity: 0;
-            }
-            100% {
+                transform: translateY(-100vh) translateX(0) rotate(0deg);
                 opacity: 1;
             }
+            100% {
+                transform: translateY(100vh) translateX(${Math.random() * 200 - 100}px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 45px;
+            }
+            .btn-yes {
+                font-size: 22px;
+                padding: 15px 35px;
+            }
+            .btn-no {
+                font-size: 16px;
+                padding: 10px 25px;
+                width: 130px;
+                height: 50px;
+            }
+            #message {
+                font-size: 28px;
+                padding: 15px 30px;
+            }
+            #crush-name {
+                font-size: 18px;
+                padding: 12px 25px;
+            }
+            #start-btn {
+                font-size: 18px;
+                padding: 12px 30px;
+            }
+            .heart {
+                width: 10px;
+                height: 10px;
+            }
+            .heart:before, .heart:after {
+                width: 10px;
+                height: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Em có đồng ý làm người yêu anh không? 🥰</h1>
-    <button class="btn btn-yes" onclick="yes()">Đồng ý</button>
-    <button class="btn btn-no" id="no-btn" onmouseover="moveButton()" ontouchstart="moveButton()">Từ chối</button>
-    <div id="message">Anh biết mà! 😍 Yêu em nhiều ❤️</div>
+    <div class="overlay"></div>
+    <div class="container">
+        <div id="name-input">
+            <h1>Nhập Tên Bạn Là Gì? 🌅</h1>
+            <input type="text" id="crush-name" placeholder="Tên bạn nè...">
+            <button id="start-btn" onclick="start()">Tiếp tục</button>
+        </div>
+        <h1 id="question" style="display: none;"></h1>
+        <button class="btn btn-yes" style="display: none;" onclick="yes()">Đồng ý</button>
+        <button class="btn btn-no" id="no-btn" style="display: none;" onmouseover="moveButton(event)" ontouchstart="moveButton(event)">Từ chối</button>
+        <div id="message"></div>
+    </div>
 
     <script>
-        // Hàm xử lý khi bấm "Đồng ý"
-        function yes() {
-            // Hiển thị thông báo
-            document.getElementById("message").style.display = "block";
+        function start() {
+            const name = document.getElementById("crush-name").value.trim() || "bạn";
+            document.getElementById("name-input").style.display = "none";
+            document.getElementById("question").innerText = `${name} có đồng ý làm người yêu anh không? 💞`;
+            document.getElementById("question").style.display = "block";
+            document.querySelector(".btn-yes").style.display = "inline-block";
+            document.getElementById("no-btn").style.display = "block";
+        }
 
-            // Tạo hiệu ứng trái tim bay xung quanh
-            for (let i = 0; i < 15; i++) { // Tạo nhiều trái tim
+        function yes() {
+            document.getElementById("message").style.display = "block";
+            document.getElementById("message").innerText = `Anh biết ${document.getElementById("crush-name").value.trim() || "bạn"} sẽ đồng ý mà! 😍 Yêu mãi mãi ❤️`;
+            document.querySelector(".btn-yes").style.display = "none";
+            document.getElementById("no-btn").style.display = "none";
+            for (let i = 0; i < 20; i++) {
                 createHeartLarge();
+                createSparkle();
+                createPetal();
             }
         }
 
-        // Hàm dịch chuyển nút "Từ chối"
-        function moveButton() {
+        function moveButton(event) {
             const btn = document.getElementById("no-btn");
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-            btn.style.left = `${x}px`;
-            btn.style.top = `${y}px`;
+            const mouseX = event.type === 'touchstart' ? event.touches[0].clientX : event.clientX;
+            const mouseY = event.type === 'touchstart' ? event.touches[0].clientY : event.clientY;
+            const btnRect = btn.getBoundingClientRect();
+            const btnX = btnRect.left + btnRect.width / 2;
+            const btnY = btnRect.top + btnRect.height / 2;
+            const dx = btnX - mouseX;
+            const dy = btnY - mouseY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const moveDistance = 150; // Giảm khoảng cách né
+
+            if (distance < 200) { // Giảm phạm vi phát hiện
+                let newX = btnX + (dx / distance) * moveDistance;
+                let newY = btnY + (dy / distance) * moveDistance;
+
+                // Giới hạn trong màn hình (padding 20px từ viền)
+                newX = Math.max(20, Math.min(newX, window.innerWidth - btn.offsetWidth - 20));
+                newY = Math.max(20, Math.min(newY, window.innerHeight - btn.offsetHeight - 20));
+
+                btn.style.left = `${newX}px`;
+                btn.style.top = `${newY}px`;
+            }
         }
 
-        // Tạo hiệu ứng trái tim bay nhỏ xung quanh
         function createHeartSmall() {
             const heart = document.createElement("div");
             heart.classList.add("heart");
-            heart.style.left = Math.random() * 100 + "vw"; // Đặt trái tim ngẫu nhiên trên màn hình
-            heart.style.animationDuration = Math.random() * 2 + 4 + "s"; // Thời gian bay ngẫu nhiên
+            const size = Math.random() * 10 + 10; // Nhỏ hơn
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            heart.style.background = `linear-gradient(45deg, hsl(${Math.random() * 60 + 300}, 80%, 60%), hsl(${Math.random() * 60 + 300}, 80%, 50%))`;
+            heart.style.left = Math.random() * 80 + 10 + "vw";
+            heart.style.animationDuration = Math.random() * 2 + 3 + "s";
             document.body.appendChild(heart);
-
-            setTimeout(() => {
-                heart.remove();
-            }, 6000); // Xóa trái tim sau khi bay
+            setTimeout(() => heart.remove(), 5000);
         }
 
-        // Tạo những trái tim bay nhỏ xung quanh khi mở trang
-        function createBackgroundHearts() {
-            for (let i = 0; i < 10; i++) { // Tạo trái tim nền
-                createHeartSmall();
-            }
-        }
-
-        setInterval(createBackgroundHearts, 1000); // Tạo trái tim nền mỗi giây
-
-        // Tạo trái tim lớn khi bấm "Đồng ý"
         function createHeartLarge() {
             const heart = document.createElement("div");
             heart.classList.add("heart");
-            heart.style.width = "60px";
-            heart.style.height = "60px";
-            heart.style.backgroundColor = "#ff2a68"; // Trái tim lớn màu đỏ
-            heart.style.left = Math.random() * 100 + "vw"; // Đặt trái tim ngẫu nhiên trên màn hình
-            heart.style.animationDuration = Math.random() * 2 + 4 + "s"; // Thời gian bay ngẫu nhiên
+            const size = Math.random() * 15 + 15; // Nhỏ hơn
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            heart.style.background = `linear-gradient(45deg, hsl(${Math.random() * 60 + 300}, 80%, 50%), hsl(${Math.random() * 60 + 300}, 80%, 40%))`;
+            heart.style.left = Math.random() * 80 + 10 + "vw";
+            heart.style.animationDuration = Math.random() * 2 + 3 + "s";
             document.body.appendChild(heart);
-
-            setTimeout(() => {
-                heart.remove();
-            }, 6000); // Xóa trái tim sau khi bay
+            setTimeout(() => heart.remove(), 5000);
         }
+
+        function createSparkle() {
+            const sparkle = document.createElement("div");
+            sparkle.classList.add("sparkle");
+            sparkle.style.left = Math.random() * 80 + 10 + "vw";
+            sparkle.style.top = Math.random() * 80 + 10 + "vh";
+            sparkle.style.animationDuration = Math.random() * 1 + 1 + "s";
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 2000);
+        }
+
+        function createPetal() {
+            const petal = document.createElement("div");
+            petal.classList.add("petal");
+            petal.style.left = Math.random() * 80 + 10 + "vw";
+            petal.style.animationDuration = Math.random() * 2 + 3 + "s";
+            document.body.appendChild(petal);
+            setTimeout(() => petal.remove(), 5000);
+        }
+
+        setInterval(createHeartSmall, 1500); // Giảm tần suất
+        setInterval(createSparkle, 2000);
+        setInterval(createPetal, 2500);
+    </script>
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: {
+                families: ['Great Vibes', 'Poppins']
+            }
+        });
     </script>
 </body>
 </html>
